@@ -1,6 +1,7 @@
 {
-"name": "One Piece Battle",
-"short_name": "OP Battle",
+"name": "One Piece Fighters",
+"short_name": "OP Fighters",
+"description": "A 2D fighting game inspired by One Piece where Luffy battles Zoro.",
 "start_url": "/",
 "display": "standalone",
 "background_color": "#000000",

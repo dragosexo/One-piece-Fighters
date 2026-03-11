@@ -4,6 +4,7 @@
 "description": "A 2D fighting game inspired by One Piece where Luffy battles Zoro.",
 "start_url": "/",
 "display": "standalone",
+"orientation": "landscape",
 "background_color": "#000000",
 "theme_color": "#000000",
 "icons": [

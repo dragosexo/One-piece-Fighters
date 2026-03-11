@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Piece Mobile Fight</title>
+
+<style>
+
+body{
+background:black;
+color:white;
+text-align:center;
+font-family:Arial;
+}
+
+canvas{
+background:#222;
+border:3px solid white;
+}
+
+.controls{
+margin-top:10px;
+}
+
+button{
+font-size:25px;
+padding:15px;
+margin:5px;
+width:70px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>One Piece Battle Mobile</h2>
+
+<canvas id="game" width="350" height="300"></canvas>
+
+<div class="controls">
+
+<div>
+<button ontouchstart="moveLeft=true" ontouchend="moveLeft=false">⬅️</button>
+<button ontouchstart="moveRight=true" ontouchend="moveRight=false">➡️</button>
+</div>
+
+<div>
+<button ontouchstart="jump=true" ontouchend="jump=false">⬆️</button>
+<button ontouchstart="attack=true" ontouchend="attack=false">👊</button>
+</div>
+
+</div>
+
+<script>
+
+const canvas = document.getElementById("game")
+const ctx = canvas.getContext("2d")
+
+let moveLeft=false
+let moveRight=false
+let jump=false
+let attack=false
+
+class Fighter{
+
+constructor(x,color,name){
+this.x=x
+this.y=200
+this.width=40
+this.height=80
+this.color=color
+this.health=100
+this.name=name
+this.velY=0
+this.attackCooldown=0
+}
+
+draw(){
+
+ctx.fillStyle=this.color
+ctx.fillRect(this.x,this.y,this.width,this.height)
+
+ctx.fillStyle="white"
+ctx.fillText(this.name,this.x,this.y-5)
+
+}
+
+jump(){
+
+if(this.y>=200){
+this.velY=-10
+}
+
+}
+
+attack(enemy){
+
+if(this.attackCooldown<=0){
+
+if(Math.abs(this.x-enemy.x)<60){
+
+enemy.health-=5
+
+if(this.x<enemy.x){
+enemy.x+=30
+}else{
+enemy.x-=30
+}
+
+}
+
+this.attackCooldown=20
+}
+
+}
+
+update(){
+
+this.y+=this.velY
+this.velY+=0.5
+
+if(this.y>200){
+this.y=200
+this.velY=0
+}
+
+if(this.attackCooldown>0){
+this.attackCooldown--
+}
+
+}
+
+}
+
+const luffy=new Fighter(40,"red","Luffy")
+const zoro=new Fighter(250,"green","Zoro")
+
+function drawHealth(){
+
+ctx.fillStyle="red"
+ctx.fillRect(10,10,luffy.health,10)
+
+ctx.fillStyle="green"
+ctx.fillRect(240,10,zoro.health,10)
+
+}
+
+function ai(){
+
+if(zoro.x>luffy.x) zoro.x-=1
+if(zoro.x<luffy.x) zoro.x+=1
+
+if(Math.random()<0.02) zoro.jump()
+
+if(Math.abs(zoro.x-luffy.x)<50){
+zoro.attack(luffy)
+}
+
+}
+
+function gameLoop(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+if(moveLeft) luffy.x-=3
+if(moveRight) luffy.x+=3
+if(jump) luffy.jump()
+if(attack) luffy.attack(zoro)
+
+luffy.update()
+
+ai()
+zoro.update()
+
+luffy.draw()
+zoro.draw()
+
+drawHealth()
+
+if(luffy.health<=0){
+
+ctx.fillStyle="white"
+ctx.font="30px Arial"
+ctx.fillText("ZORO WINS",100,150)
+return
+
+}
+
+if(zoro.health<=0){
+
+ctx.fillStyle="white"
+ctx.font="30px Arial"
+ctx.fillText("LUFFY WINS",100,150)
+return
+
+}
+
+requestAnimationFrame(gameLoop)
+
+}
+
+gameLoop()
+
+</script>
+
+</body>
+</html>

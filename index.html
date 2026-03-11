@@ -11,6 +11,11 @@ background:black;
 color:white;
 text-align:center;
 font-family:Arial;
+<script>
+if ("serviceWorker" in navigator) {
+navigator.serviceWorker.register("service-worker.js");
+}
+</script>
 }
 
 canvas{

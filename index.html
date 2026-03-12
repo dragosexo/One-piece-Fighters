@@ -129,7 +129,17 @@ this.attackCooldown=0
 draw(){
 
 ctx.fillStyle=this.color
-ctx.fillRect(this.x,this.y,this.width,this.height)
+ctx.drawImage(
+luffySprite,
+0,
+0,
+64,
+64,
+this.x,
+this.y,
+80,
+80
+)
 
 ctx.fillStyle="white"
 ctx.fillText(this.name,this.x,this.y-5)
